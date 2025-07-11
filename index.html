@@ -2,70 +2,266 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Charles Bundi | Portfolio</title>
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    /* Background with overlay */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url("images/background.jpg") no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      font-weight: bold;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: -1;
+    }
+
+    /* Header */
+    header {
+      background: rgba(30, 42, 56, 0.9);
+      text-align: center;
+      padding: 2rem 0;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+    }
+
+    header p {
+      font-size: 1.2rem;
+    }
+
+    /* Profile Icon */
+    .profile-icon {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .profile-icon img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid #fff;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+    }
+
+    .modal-content {
+      display: block;
+      margin: 5% auto;
+      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 40px;
+      font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* Main Content */
+    main {
+      padding: 2rem;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      margin-bottom: 2rem;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .container h2 {
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    /* Lists */
+    ul {
+      padding-left: 1.5rem;
+    }
+
+    ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Projects */
+    .project {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(6px);
+      margin-bottom: 2rem;
+      padding: 1rem 1.5rem;
+      border-left: 5px solid #3498db;
+      border-radius: 8px;
+      transition: transform 0.2s ease;
+    }
+
+    .project:hover {
+      transform: translateY(-4px);
+      background-color: rgba(24, 159, 231, 0.2);
+    }
+
+    .project h3 {
+      color: #7ecbff;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Links */
+    a {
+      color: #87cefa;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(17, 84, 160, 0.9);
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      main {
+        padding: 1rem;
+      }
+
+      .container {
+        padding: 1.5rem;
+      }
+
+      .modal-content {
+        max-width: 90%;
+      }
+    }
+  </style>
 </head>
 <body>
-
   <header>
     <h1>Charles Bundi</h1>
-    <p>Full-Stack Developer | Python Enthusiast | Firebase Integrator</p>
+    <p>Computer Science Graduate | Web Developer</p>
   </header>
 
-  <nav>
-    <a href="#about">About</a>
-    <a href="#skills">Skills</a>
-    <a href="#projects">Projects</a>
-    <a href="#contact">Contact</a>
-  </nav>
+  <!-- Profile Icon -->
+  <div class="profile-icon">
+    <img src="images/icon.jpg" alt="Profile Icon" id="icon" onclick="showProfile()" />
+  </div>
 
-  <section id="about">
-    <h2>About Me</h2>
-    <p>I’m Charles, a Computer Science graduate from Zetech University (2023–2025). I enjoy building both frontend and backend applications, learning new tools, and solving real-world problems using code. I have no work experience yet but I’ve built and contributed to personal projects that demonstrate my growth and dedication.</p>
-  </section>
+  <!-- Modal Image -->
+  <div id="profileModal" class="modal">
+    <span class="close" onclick="hideProfile()">&times;</span>
+    <img class="modal-content" id="profileImage">
+  </div>
 
-  <section id="skills">
-    <h2>Skills</h2>
-    <ul>
-      <li>Languages: Python, JavaScript</li>
-      <li>Web: HTML, CSS, Node.js, Express</li>
-      <li>Database: MySQL, Firebase</li>
-      <li>Tools: Git, GitHub, VS Code</li>
-      <li>Other: Twilio WhatsApp API, API Integration</li>
-    </ul>
-  </section>
+  <main>
+    <section id="about" class="container">
+      <h2>About Me</h2>
+      <p>I am a Computer Science student from Zetech University (2023–2025). I specialize in JavaScript, HTML, CSS, Python, database management, and full-stack web development. I also have experience using Git and GitHub. I’m passionate about creating useful software solutions and constantly learning new technologies.</p>
+    </section>
 
-  <section id="projects">
-    <h2>Projects</h2>
+    <section id="skills" class="container">
+      <h2>Skills</h2>
+      <ul>
+        <li>Python Programming</li>
+        <li>Front-End Development (HTML, CSS, JavaScript)</li>
+        <li>Back-End Development (Node.js)</li>
+        <li>Database Management (Firebase, PostgreSQL, Supabase, MySQL)</li>
+        <li>Git & GitHub Version Control</li>
+      </ul>
+    </section>
 
-    <div class="project">
-      <h3>WhatsApp Calendar Bot</h3>
-      <p>Node.js backend app using Firebase and Twilio to send WhatsApp reminders linked to calendar events.</p>
-    </div>
+    <section id="projects" class="container">
+      <h2>Projects</h2>
+      <div class="project">
+        <h3>WhatsApp Calendar Tracker</h3>
+        <p>Built a backend system integrating Twilio WhatsApp API and Firebase to send and track calendar events via WhatsApp. This helps in event progress tracking of any activity.</p>
+      </div>
+      <div class="project">
+        <h3>Personal Blog Site</h3>
+        <p>A full-stack blog using HTML, CSS, JavaScript (front end), and Node.js + SQLite (back end). Users can register and share blogs, including photos and videos, and interact through comments and likes.</p>
+      </div>
+      <div class="project">
+        <h3>Glassmorphism Digital Clock</h3>
+        <p>A stylish web clock built using HTML, CSS, and JavaScript. It includes a side notebook integrated with an alarm system for saving notes and reminders, with a modern frosted-glass design.</p>
+      </div>
+      <div class="project">
+        <h3>White Cotton Website</h3>
+        <p>An event planning website where users can book professional event planning services.</p>
+      </div>
+      <div class="project">
+        <h3>Diary App with Password Protection</h3>
+        <p>A secure journal app built using Python and Tkinter. It features password hashing and encrypted note storage, allowing users to safely write and access private notes.</p>
+      </div>
+    </section>
 
-    <div class="project">
-      <h3>Blog System (In Progress)</h3>
-      <p>Full-stack personal blog with authentication, admin panel, comment system, and PostgreSQL backend.</p>
-    </div>
-
-    <div class="project">
-      <h3>Digital Clock Web App</h3>
-      <p>Includes clock, alarms, reminders, notes, and future events with sound and notification support.</p>
-    </div>
-
-  </section>
-
-  <section id="contact">
-    <h2>Contact Me</h2>
-    <p>Email: your_email@example.com</p>
-    <p>GitHub: <a href="https://github.com/yourusername" target="_blank">github.com/yourusername</a></p>
-    <p>Location: Nairobi, Kenya</p>
-  </section>
+    <section id="contact" class="container">
+      <h2>Contact</h2>
+      <p>Email: <a href="mailto:bundicharles37@gmail.com">bundicharles37@gmail.com</a></p>
+      <p>GitHub: <a href="https://github.com/Bundicharles" target="_blank">github.com/Bundicharles</a></p>
+      <p>Phone: <a href="tel:+254111323452">📞 +254 111 323 452</a></p>
+    </section>
+  </main>
 
   <footer>
     <p>&copy; 2025 Charles Bundi. All rights reserved.</p>
   </footer>
 
+  <!-- Modal JS -->
+  <script>
+    function showProfile() {
+      document.getElementById("profileModal").style.display = "block";
+      document.getElementById("profileImage").src = "images/profile.jpg";
+    }
+
+    function hideProfile() {
+      document.getElementById("profileModal").style.display = "none";
+    }
+  </script>
 </body>
 </html>
